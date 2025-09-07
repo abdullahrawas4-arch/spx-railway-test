@@ -1,17 +1,17 @@
-import os
-import telebot
+import os, requests, time
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-CHAT_ID = os.environ.get("CHAT_ID")
+# قراءة التوكن والـ chat id من Railway Secrets
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
-if not BOT_TOKEN or not CHAT_ID:
-    raise RuntimeError("Set BOT_TOKEN and CHAT_ID in Railway Variables")
+def send(text):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    requests.get(url, params={"chat_id": CHAT_ID, "text": text})
 
-bot = telebot.TeleBot(BOT_TOKEN)
-
-@bot.message_handler(commands=['start'])
-def start_cmd(message):
-    bot.send_message(CHAT_ID, "✅ البوت اشتغل على Railway (نسخة تجريبية).")
-
-print("✅ Running minimal bot on Railway…")
-bot.polling()
+if name == "__main__":
+    if not TOKEN or not CHAT_ID:
+        raise RuntimeError("❌ ناقص TELEGRAM_BOT_TOKEN أو CHAT_ID في Railway")
+    send("✅ البوت اشتغل على Railway يا عبدالله!")
+    # نخلي البوت يفضل شغال
+    while True:
+        time.sleep(3600)
